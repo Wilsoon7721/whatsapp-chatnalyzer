@@ -110,7 +110,7 @@ const Home = () => {
         };
     }, []);
 
-    const handleFileChange = () => {
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const fileInput = document.getElementById('file-upload') as HTMLInputElement;
         const file = fileInput.files![0];
         if (!file) {
@@ -124,6 +124,7 @@ const Home = () => {
         }
         setSelectedFile(file);
         setErrorMessage(null);
+        event.target.value = '';
     };
 
     function splitByFirstDelimiter(text: string, delimiter: string) {
@@ -144,6 +145,7 @@ const Home = () => {
     };
 
     const processFile = async (file: File) => {
+        let processingStart = Date.now();
         let fileExtension = file.name.split('.').pop()?.toLowerCase();
 
         // Maximum 200MB file size
@@ -305,73 +307,151 @@ const Home = () => {
 
             // Get the participants
             let participants = new Set<string>();
-
             let messageCountByDate: Record<string, number> = {};
             let messageCountByMonth: Record<string, number> = {};
             let messageCountByYear: Record<string, number> = {};
             let uniqueMessageDates = new Set<number>();
-            // Remember to continue with `processedLines` and not `lines`. `processedLines` contains the combined lines.
-            for (let i = 0; i < processedLines.length; i++) {
-                const line = processedLines[i];
-                let participant = splitByFirstDelimiter(splitByFirstDelimiter(line, '-')[1], ':')[0].trim();
-                participants.add(participant);
-                let messageDate = splitByFirstDelimiter(splitByFirstDelimiter(line, ' - ')[0].trim(), ",")[0].trim();
-                let dateObj = parseDateString(messageDate);
-                messageCountByDate[messageDate] = (messageCountByDate[messageDate] || 0) + 1;
-                if (dateObj)
-                    uniqueMessageDates.add(dateObj.getTime());
-                if (dateObj) {
-                    const monthYear = dateObj.toLocaleString('default', { month: 'long', year: 'numeric' });
-                    const year = dateObj.getFullYear().toString();
-                    messageCountByMonth[monthYear] = (messageCountByMonth[monthYear] || 0) + 1;
-                    messageCountByYear[year] = (messageCountByYear[year] || 0) + 1;
+
+            let index = 0;
+            const PER_CHUNK_SIZE = processedLines.length / 100;
+            const processByChunk = () => {
+                let chunkEnd = Math.min(index + PER_CHUNK_SIZE, processedLines.length);
+                for (; index < chunkEnd; index++) {
+                    const line = processedLines[index];
+                    let participant = splitByFirstDelimiter(splitByFirstDelimiter(line, '-')[1], ':')[0].trim();
+                    participants.add(participant);
+                    let messageDate = splitByFirstDelimiter(splitByFirstDelimiter(line, ' - ')[0].trim(), ",")[0].trim();
+                    let dateObj = parseDateString(messageDate);
+                    messageCountByDate[messageDate] = (messageCountByDate[messageDate] || 0) + 1;
+                    if (dateObj)
+                        uniqueMessageDates.add(dateObj.getTime());
+                    if (dateObj) {
+                        const monthYear = dateObj.toLocaleString('default', { month: 'long', year: 'numeric' });
+                        const year = dateObj.getFullYear().toString();
+                        messageCountByMonth[monthYear] = (messageCountByMonth[monthYear] || 0) + 1;
+                        messageCountByYear[year] = (messageCountByYear[year] || 0) + 1;
+                    }
+                    let message = line.split(':')[2].trim();
+                    accumulateEmojis(participant, message);
+                    accumulateWords(participant, message);
                 }
-                let message = line.split(':')[2].trim();
-                accumulateEmojis(participant, message);
-                accumulateWords(participant, message);
+
+                if (index < processedLines.length) {
+                    setProcessingMessage(`This may take a while... (${Math.round((index / processedLines.length) * 100)}% complete)`);
+                    setTimeout(processByChunk, 0);
+                } else {
+                    let firstMessageAnalysis = {
+                        participant: splitByFirstDelimiter(splitByFirstDelimiter(processedLines[0], '-')[1], ':')[0].trim(),
+                        date: splitByFirstDelimiter(processedLines[0], ' - ')[0].trim()
+                    }
+
+                    let lastMessageAnalysis = {
+                        participant: splitByFirstDelimiter(splitByFirstDelimiter(processedLines[processedLines.length - 1], '-')[1], ':')[0].trim(),
+                        date: splitByFirstDelimiter(processedLines[processedLines.length - 1], ' - ')[0].trim()
+                    }
+
+                    let firstMessageDate = parseDateString(firstMessageAnalysis.date);
+                    let lastMessageDate = parseDateString(lastMessageAnalysis.date);
+                    let totalDaysBetweenFirstAndLast = firstMessageDate && lastMessageDate ? Math.round(Math.abs((lastMessageDate.getTime() - firstMessageDate.getTime()) / (24 * 60 * 60 * 1000))) + 1 : 0;
+
+                    let finalParticipants = Array.from(participants);
+                    finalParticipants.push('All Participants');
+
+                    validateMap(wordMap);
+                    validateMap(emojiMap);
+
+                    let stats = {
+                        participants: finalParticipants,
+                        totalMessages,
+                        totalCharacters,
+                        totalWords,
+                        totalEmojis,
+                        totalDaysBetweenFirstAndLast,
+                        totalChatDays: uniqueMessageDates.size,
+                        charactersByParticipant: characterCount,
+                        messagesByParticipant: messageCount,
+                        emojiByParticipantBreakdown: emojiMap,
+                        wordByParticipantBreakdown: wordMap,
+                        firstMessageAnalysed: firstMessageAnalysis,
+                        lastMessageAnalysed: lastMessageAnalysis,
+                        messageCountByDay: messageCountByDate,
+                        messageCountByMonth: messageCountByMonth,
+                        messageCountByYear: messageCountByYear
+                    };
+                    setStatistics(stats);
+                    setProcessComplete(true);
+                    let processingEnd = Date.now();
+                    console.log(`Processing took ${processingEnd - processingStart}ms`);
+                }
             }
 
-            let firstMessageAnalysis = {
-                participant: splitByFirstDelimiter(splitByFirstDelimiter(processedLines[0], '-')[1], ':')[0].trim(),
-                date: splitByFirstDelimiter(processedLines[0], ' - ')[0].trim()
+            if (processedLines.length > 200000) {
+                processByChunk();
+                setProcessingMessage('This may take a while... (0% complete)');
+            } else {
+                for (let i = 0; i < processedLines.length; i++) {
+                    const line = processedLines[i];
+                    let participant = splitByFirstDelimiter(splitByFirstDelimiter(line, '-')[1], ':')[0].trim();
+                    participants.add(participant);
+                    let messageDate = splitByFirstDelimiter(splitByFirstDelimiter(line, ' - ')[0].trim(), ",")[0].trim();
+                    let dateObj = parseDateString(messageDate);
+                    messageCountByDate[messageDate] = (messageCountByDate[messageDate] || 0) + 1;
+                    if (dateObj)
+                        uniqueMessageDates.add(dateObj.getTime());
+                    if (dateObj) {
+                        const monthYear = dateObj.toLocaleString('default', { month: 'long', year: 'numeric' });
+                        const year = dateObj.getFullYear().toString();
+                        messageCountByMonth[monthYear] = (messageCountByMonth[monthYear] || 0) + 1;
+                        messageCountByYear[year] = (messageCountByYear[year] || 0) + 1;
+                    }
+                    let message = line.split(':')[2].trim();
+                    accumulateEmojis(participant, message);
+                    accumulateWords(participant, message);
+                }
+
+                let firstMessageAnalysis = {
+                    participant: splitByFirstDelimiter(splitByFirstDelimiter(processedLines[0], '-')[1], ':')[0].trim(),
+                    date: splitByFirstDelimiter(processedLines[0], ' - ')[0].trim()
+                }
+
+                let lastMessageAnalysis = {
+                    participant: splitByFirstDelimiter(splitByFirstDelimiter(processedLines[processedLines.length - 1], '-')[1], ':')[0].trim(),
+                    date: splitByFirstDelimiter(processedLines[processedLines.length - 1], ' - ')[0].trim()
+                }
+
+                let firstMessageDate = parseDateString(firstMessageAnalysis.date);
+                let lastMessageDate = parseDateString(lastMessageAnalysis.date);
+                let totalDaysBetweenFirstAndLast = firstMessageDate && lastMessageDate ? Math.round(Math.abs((lastMessageDate.getTime() - firstMessageDate.getTime()) / (24 * 60 * 60 * 1000))) : 0;
+
+                let finalParticipants = Array.from(participants);
+                finalParticipants.push('All Participants');
+
+                validateMap(wordMap);
+                validateMap(emojiMap);
+
+                let stats = {
+                    participants: finalParticipants,
+                    totalMessages,
+                    totalCharacters,
+                    totalWords,
+                    totalEmojis,
+                    totalDaysBetweenFirstAndLast,
+                    totalChatDays: uniqueMessageDates.size,
+                    charactersByParticipant: characterCount,
+                    messagesByParticipant: messageCount,
+                    emojiByParticipantBreakdown: emojiMap,
+                    wordByParticipantBreakdown: wordMap,
+                    firstMessageAnalysed: firstMessageAnalysis,
+                    lastMessageAnalysed: lastMessageAnalysis,
+                    messageCountByDay: messageCountByDate,
+                    messageCountByMonth: messageCountByMonth,
+                    messageCountByYear: messageCountByYear
+                };
+                setStatistics(stats);
+                setProcessComplete(true);
+                let processingEnd = Date.now();
+                console.log(`Processing took ${processingEnd - processingStart}ms`);
             }
-
-            let lastMessageAnalysis = {
-                participant: splitByFirstDelimiter(splitByFirstDelimiter(processedLines[processedLines.length - 1], '-')[1], ':')[0].trim(),
-                date: splitByFirstDelimiter(processedLines[processedLines.length - 1], ' - ')[0].trim()
-            }
-
-            let firstMessageDate = parseDateString(firstMessageAnalysis.date);
-            let lastMessageDate = parseDateString(lastMessageAnalysis.date);
-            let totalDaysBetweenFirstAndLast = firstMessageDate && lastMessageDate ? Math.round(Math.abs((lastMessageDate.getTime() - firstMessageDate.getTime()) / (24 * 60 * 60 * 1000))) : 0;
-
-            let finalParticipants = Array.from(participants);
-            finalParticipants.push('All Participants');
-
-            validateMap(wordMap);
-            validateMap(emojiMap);
-
-            let stats = {
-                participants: finalParticipants,
-                totalMessages,
-                totalCharacters,
-                totalWords,
-                totalEmojis,
-                totalDaysBetweenFirstAndLast,
-                totalChatDays: uniqueMessageDates.size,
-                charactersByParticipant: characterCount,
-                messagesByParticipant: messageCount,
-                emojiByParticipantBreakdown: emojiMap,
-                wordByParticipantBreakdown: wordMap,
-                firstMessageAnalysed: firstMessageAnalysis,
-                lastMessageAnalysed: lastMessageAnalysis,
-                messageCountByDay: messageCountByDate,
-                messageCountByMonth: messageCountByMonth,
-                messageCountByYear: messageCountByYear
-            };
-            setStatistics(stats);
-            setProcessComplete(true);
-
         } catch (err) {
             setErrorMessage(`Are you sure this is a WhatsApp chat log?`);
             console.error(err);

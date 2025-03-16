@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import Statistics from './Statistics';
+import { useEffect, useRef, useState, lazy, Suspense } from 'react';
+const Statistics = lazy(() => import('./Statistics'));
 import { Upload, ExclamationTriangleFill, InfoCircleFill } from 'react-bootstrap-icons';
 import '../styles/Home.css';
 import emojiRegex from 'emoji-regex';
@@ -525,7 +525,14 @@ const Home = () => {
                         <h5>File: {selectedFile?.name}</h5>
                         <p style={{ fontSize: 16, textAlign: 'center' }}>Want to analyse another file? Click <a href="/">here</a> to return to the homepage!</p>
                     </div>
-                    <Statistics stats={statistics} groupLikely={groupLikely.current} />
+                    <Suspense fallback={
+                        <div className='d-flex align-items-center flex-column mt-5'>
+                            <div className='spinner-border text-secondary' style={{ width: '2.5rem', height: '2.5rem' }} role="status"></div>
+                            <p style={{ fontSize: 14, color: 'gray', marginTop: '15px' }}>Loading...</p>
+                        </div>
+                    }>
+                        <Statistics stats={statistics} groupLikely={groupLikely.current} />
+                    </Suspense>
                 </>
             )}
         </div>

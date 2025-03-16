@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/About.css';
-import { ThreeDotsVertical } from 'react-bootstrap-icons';
+import { ThreeDotsVertical, ArrowRight } from 'react-bootstrap-icons';
 import FAQuestion from '../components/FAQuestion';
 
 const About: React.FC = () => {
@@ -31,7 +31,7 @@ const About: React.FC = () => {
             <div className='d-flex flex-column align-items-center' style={{ padding: '2rem 0' }}>
                 <h5 style={{ textAlign: 'center' }} className='mb-4' id='quickstart'>How do I start using your program?</h5>
                 <p>
-                    Export your WhatsApp chats by going to the chat you want to analyze and pressing the <ThreeDotsVertical size="18px" /> button on the top right. Afterwards, select <b>Export chat</b> and then <b>Without media</b>. Provide the text file to the program by clicking <b>Upload file</b> .
+                    Export your WhatsApp chats by going to the chat you want to analyze and pressing the <ThreeDotsVertical size="18px" /> button on the top right. Afterwards, go to <b>More</b> <ArrowRight /> <b>Export chat</b> then <b>Without media</b>. Return to the <a href='/'>Home</a> page and provide the text file to the program.
                     <br /><br />
                     You may also choose to provide the ZIP file if you selected <b>With media</b>, but the program will only process the chat file and ignore everything else.
                 </p>
@@ -63,7 +63,18 @@ const About: React.FC = () => {
                         </ul>
                     </>
                 } />
-                <FAQuestion question='How long does the analysis take?' answer={<>The analysis is done <b>instantly</b> in your browser after you upload the file. The time taken to process the chat is dependent on the size of the chat file and the number of participants in the chat.</>} />
+                <FAQuestion question='How long does the analysis take?' answer={
+                    <>
+                        The analysis is done <b>instantly</b> in your browser after you upload the file. The time taken to process the chat is dependent on the size of the chat file and your own device's computing power.
+                        <br /><br />
+                        While testing, a 200 MB text file size took my computer <b>about 3 minutes</b> to process.
+                    </>
+                } />
+                <FAQuestion question='How did you make this program?' answer={
+                    <>
+                        This program is made fully using <a href='https://react.dev/'><b>React</b></a> and <a href='https://www.typescriptlang.org/'><b>TypeScript</b></a>, and is built using <a href='https://vite.dev/'><b>Vite</b></a>.
+                    </>
+                } />
                 <FAQuestion question='I found a bug with your code. Where can I report it?' answer={<>You can report any bugs or issues by opening an issue on <a href="https://github.com/Wilsoon7721/whatsapp-chatnalyzer/issues">Github</a>. If you can, do provide a way I could reproduce the issue from my end.</>} />
             </div>
         </div>

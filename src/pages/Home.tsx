@@ -7,6 +7,7 @@ import StatisticsData from '../types/StatisticsData';
 import JSZip from 'jszip';
 
 const Home = () => {
+    const basePath = process.env.NODE_ENV === 'production' ? '/whatsapp-chatnalyzer/#' : '';
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [processingMessage, setProcessingMessage] = useState("Please wait while your file is being processed.");
@@ -494,7 +495,7 @@ const Home = () => {
                             <InfoCircleFill size='18px' style={{ marginRight: '10px' }} />
                             <strong>Not sure where to start?</strong>
                         </div>
-                        <p style={{ marginBottom: 0 }}>Take a look at the <a href='/about#quickstart'>quickstart</a>.</p>
+                        <p style={{ marginBottom: 0 }}>Take a look at the <a href={`${basePath}/about#quickstart`}>quickstart</a>.</p>
                     </div>
                 </>
             )}
@@ -523,7 +524,7 @@ const Home = () => {
                 <>
                     <div className="d-flex align-items-center justify-content-center flex-column mt-3">
                         <h5>File: {selectedFile?.name}</h5>
-                        <p style={{ fontSize: 16, textAlign: 'center' }}>Want to analyse another file? Click <a href="/">here</a> to return to the homepage!</p>
+                        <p style={{ fontSize: 16, textAlign: 'center' }}>Want to analyse another file? Click <a href={`${basePath}/`} onClick={() => window.location.reload()}>here</a> to return to the homepage!</p>
                     </div>
                     <Suspense fallback={
                         <div className='d-flex align-items-center flex-column mt-5'>

@@ -4,11 +4,12 @@ import { ThreeDotsVertical, ArrowRight } from 'react-bootstrap-icons';
 import FAQuestion from '../components/FAQuestion';
 
 const About: React.FC = () => {
-    const [privacyNoticeView, setPrivacyNoticeView] = useState(window.location.hash === '#privacy');
+    const [privacyNoticeView, setPrivacyNoticeView] = useState(window.location.hash.includes('#privacy'));
+    const basePath = process.env.NODE_ENV === 'production' ? '/whatsapp-chatnalyzer/#' : '';
 
     useEffect(() => {
         const handleHashChange = () => {
-            setPrivacyNoticeView(window.location.hash === '#privacy');
+            setPrivacyNoticeView(window.location.hash.includes('#privacy'));
         }
 
         if (privacyNoticeView) {
@@ -22,7 +23,7 @@ const About: React.FC = () => {
         return () => {
             window.removeEventListener('hashchange', handleHashChange);
         };
-    }, []);
+    }, [privacyNoticeView]);
 
     return (
         <div className="d-flex flex-column" style={{ height: "100vh", padding: "3rem 15rem", fontSize: '16px' }}>
@@ -31,7 +32,7 @@ const About: React.FC = () => {
             <div className='d-flex flex-column align-items-center' style={{ padding: '2rem 0' }}>
                 <h5 style={{ textAlign: 'center' }} className='mb-4' id='quickstart'>How do I start using your program?</h5>
                 <p>
-                    Export your WhatsApp chats by going to the chat you want to analyze and pressing the <ThreeDotsVertical size="18px" /> button on the top right. Afterwards, go to <b>More</b> <ArrowRight /> <b>Export chat</b> then <b>Without media</b>. Return to the <a href='/'>Home</a> page and provide the text file to the program.
+                    Export your WhatsApp chats by going to the chat you want to analyze and pressing the <ThreeDotsVertical size="18px" /> button on the top right. Afterwards, go to <b>More</b> <ArrowRight /> <b>Export chat</b> then <b>Without media</b>. Return to the <a href={`${basePath}/`}>Home</a> page and provide the text file to the program.
                     <br /><br />
                     You may also choose to provide the ZIP file if you selected <b>With media</b>, but the program will only process the chat file and ignore everything else.
                 </p>

@@ -15,24 +15,27 @@ WhatsApp Chatnalyzer is a tool designed to help users extract various statistics
 
 Check out the live version of the project [here](https://wilsoon7721.github.io/whatsapp-chatnalyzer/).
 
-## Getting Started
+## Prefer to Host The Project Yourself?
 
 ### Prerequisites
 
 To run the project locally, ensure that you have the following installed:
 
 - Node.js (version >=18.0)
-- npm (version >=8.0, packaged with Node.js) 
+- npm (version >=8.0, packaged with Node.js)
+- (Optional) git to clone the repository
 
 ### Installation 
 
-To host the program for yourself, perform the following:
+To run the project for yourself, perform the following:
 
 1. Clone the repository:
    ```bash
    git clone https://github.com/Wilsoon7721/whatsapp-chatnalyzer.git
    cd whatsapp-chatnalyzer
    ```
+   If you do not wish to install `git`, you may also download the repository as a ZIP file and extract the contents into a folder before opening a command prompt in that folder.
+   
 2. Install project dependencies:
    ```bash
    npm install

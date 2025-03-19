@@ -1,50 +1,46 @@
-# React + TypeScript + Vite
+# WhatsApp Chatnalyzer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+WhatsApp Chatnalyzer is a tool designed to help users extract various statistics based on their WhatsApp chat exports. It provides insights into messaging patterns, participant contributions, and more in a user-friendly interface.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Upload WhatsApp chat text files or ZIP files containing chat exports.
+- Support for WhatsApp group chats and business accounts.
+- View detailed individual and combined statistics:
+  - **Individual Statistics**: Total messages, words, characters, emojis sent, along with word usage frequency.
+  - **Combined Statistics**: Total messages exchanged, most used words, emojis, word usage frequency, and graphs showing messages over days, months, and years.
+- All data is processed in the user's browser and not sent out to any remote servers.
 
-## Expanding the ESLint configuration
+## Application Demo
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Check out the live version of the project [here](https://wilsoon7721.github.io/whatsapp-chatnalyzer/).
 
-- Configure the top-level `parserOptions` property like this:
+## Prefer to Host The Project Yourself?
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### Prerequisites
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+To run the project locally, ensure that you have the following installed:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+- Node.js (version >=18.0)
+- npm (version >=8.0, packaged with Node.js)
+- (Optional) git to clone the repository
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+### Installation 
+
+To run the project for yourself, perform the following:
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Wilsoon7721/whatsapp-chatnalyzer.git
+   cd whatsapp-chatnalyzer
+   ```
+   If you do not wish to install `git`, you may also download the repository as a ZIP file and extract the contents into a folder before opening a command prompt in that folder.
+   
+2. Install project dependencies:
+   ```bash
+   npm install
+   ```
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```

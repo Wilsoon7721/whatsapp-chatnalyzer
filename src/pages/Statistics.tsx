@@ -170,6 +170,10 @@ const Statistics: React.FC<{ stats: StatisticsData, groupLikely: boolean }> = ({
     }, [participantFilter, statistics]);
 
     useEffect(() => {
+        if (renderedWords && Object.keys(renderedWords).length < 5)
+            setDynamicCols(Object.keys(renderedWords).length);
+        else
+            setDynamicCols(5);
         let tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
         [...tooltipTriggerList].forEach(el => new Tooltip(el));
     }, [renderedWords]);

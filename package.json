@@ -8,17 +8,16 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "postbuild": "ncp ./404.html ./dist/404.html && ncp ./og-image.png ./dist/assets/og-image.png && ncp ./og-logo.png ./dist/assets/og-logo.png",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "postbuild": "ncp ./og-image.png ./dist/assets/og-image.png && ncp ./og-logo.png ./dist/assets/og-logo.png",
+    "predeploy": "npm run build"
   },
-  "homepage": "https://wilsoon7721.github.io/whatsapp-chatnalyzer",
+  "homepage": "https://whatsapp-chatnalyzer.wilsoon.dev",
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@mui/icons-material": "^6.4.6",
-    "@mui/material": "^6.4.6",
-    "bootstrap": "^5.3.3",
+    "@mui/icons-material": "^6.4.8",
+    "@mui/material": "^6.4.8",
+    "bootstrap": "^5.3.5",
     "chart.js": "^4.4.8",
     "chartjs-plugin-zoom": "^2.2.0",
     "emoji-regex": "^10.4.0",
@@ -36,6 +35,7 @@
   "devDependencies": {
     "@eslint/js": "^9.17.0",
     "@types/bootstrap": "^5.2.10",
+    "@types/node": "^25.0.3",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@types/react-helmet": "^6.1.11",

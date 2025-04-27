@@ -49,3 +49,15 @@
 .faq-answer.show {
     max-height: 500px;
 }
+
+.about-container {
+  height: 100vh;
+  padding: 3rem 15rem;
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .about-container {
+    padding: 2rem 2rem;
+  }
+}

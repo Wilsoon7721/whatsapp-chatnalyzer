@@ -5,7 +5,6 @@ import FAQuestion from '../components/FAQuestion';
 
 const About: React.FC = () => {
     const [privacyNoticeView, setPrivacyNoticeView] = useState(window.location.hash.includes('#privacy'));
-    const basePath = process.env.NODE_ENV === 'production' ? '/whatsapp-chatnalyzer/#' : '';
 
     useEffect(() => {
         const handleHashChange = () => {
@@ -26,13 +25,13 @@ const About: React.FC = () => {
     }, [privacyNoticeView]);
 
     return (
-        <div className="d-flex flex-column" style={{ height: "100vh", padding: "3rem 15rem", fontSize: '16px' }}>
+        <div className="d-flex flex-column about-container">
             <p>This program aims to help users extract various statistics based on their WhatsApp chats and present them in an easy to read and navigate format. I made it personally for me to view fun insights about my WhatsApp chats, but decided that it could be quite useful to release this to the public too.</p>
             <p>If you have any additional features or statistics you wish to be added, do feel free to reach me by opening an issue on <a href="https://github.com/Wilsoon7721/whatsapp-chatnalyzer/issues">the project's Github page</a>.</p>
             <div className='d-flex flex-column align-items-center' style={{ padding: '2rem 0' }}>
                 <h5 style={{ textAlign: 'center' }} className='mb-4' id='quickstart'>How do I start using your program?</h5>
                 <p>
-                    Export your WhatsApp chats by going to the chat you want to analyze and pressing the <ThreeDotsVertical size="18px" /> button on the top right. Afterwards, go to <b>More</b> <ArrowRight /> <b>Export chat</b> then <b>Without media</b>. Return to the <a href={`${basePath}/`}>Home</a> page and provide the text file to the program.
+                    Export your WhatsApp chats by going to the chat you want to analyze and pressing the <ThreeDotsVertical size="18px" /> button on the top right. Afterwards, go to <b>More</b> <ArrowRight /> <b>Export chat</b> then <b>Without media</b>. Return to the <a href='/'>Home</a> page and provide the text file to the program.
                     <br /><br />
                     You may also choose to provide the ZIP file if you selected <b>With media</b>, but the program will only process the chat file and ignore everything else.
                 </p>

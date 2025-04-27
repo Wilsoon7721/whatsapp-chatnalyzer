@@ -535,7 +535,7 @@ const Statistics: React.FC<{ stats: StatisticsData, groupLikely: boolean }> = ({
                                 </div>
                             </div>
                         )}
-                        {participantFilter !== 'All Participants' && displayedStatistics.emojiByParticipantBreakdown && (
+                        {participantFilter !== 'All Participants' && typeof displayedStatistics.emojiByParticipantBreakdown === 'object' && (
                             <div className='col'>
                                 <div className="card" style={{ minWidth: '20vw' }}>
                                     <div className="card-body">

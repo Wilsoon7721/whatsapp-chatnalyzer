@@ -7,7 +7,6 @@ import StatisticsData from '../types/StatisticsData';
 import JSZip from 'jszip';
 
 const Home = () => {
-    const basePath = process.env.NODE_ENV === 'production' ? '/whatsapp-chatnalyzer/#' : '';
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [processingMessage, setProcessingMessage] = useState("Please wait while your file is being processed.");
@@ -33,7 +32,7 @@ const Home = () => {
     });
 
     let groupLikely = useRef<boolean>(false);
-    const systemMessages = ["Only messages that mention @Meta AI are sent to Meta. Meta can't read any other messages in this chat. Some responses may be inaccurate or inappropriate. *Tap to learn more*.", "blocked this contact", "unblocked this contact", "pinned a message", "unpinned a message", " changed to ", " added ", " removed ", " changed their phone number to a new number. Tap to message or add the new number."];
+    const systemMessages = ["Messages and calls are end-to-end encrypted. Only people in this chat can read, listen to, or share them. Learn more.", "Only messages that mention or people share with @AI can be read by Meta. Meta can’t read any other messages in this chat, as your personal messages remain end-to-end encrypted.", "Only messages that mention @Meta AI are sent to Meta. Meta can't read any other messages in this chat. Some responses may be inaccurate or inappropriate. *Tap to learn more*.", "blocked this contact", "unblocked this contact", "pinned a message", "unpinned a message", " changed to ", " added ", " removed ", " changed their phone number to a new number. Tap to message or add the new number."];
     const groupSystemMessages = ["created group", "changed this group's icon", "changed this group's settings", "changed this group's icon", "changed the subject from", "changed the group description", "added you", "removed you", "You joined using this group's invite link", "joined using this group's invite link", "is now an admin", "is no longer an admin", "You removed", "You added", "left the group"];
     const businessSystemMessages = ["You have opted out of receiving messages from", "You have opted in to receive messages from", "This business uses a secure service from Meta to manage this chat.", "This business works with other companies to manage this chat."];
 
@@ -495,7 +494,7 @@ const Home = () => {
                             <InfoCircleFill size='18px' style={{ marginRight: '10px' }} />
                             <strong>Not sure where to start?</strong>
                         </div>
-                        <p style={{ marginBottom: 0 }}>Take a look at the <a href={`${basePath}/about#quickstart`}>quickstart</a>.</p>
+                        <p style={{ marginBottom: 0 }}>Take a look at the <a href='/about#quickstart'>quickstart</a>.</p>
                     </div>
                 </>
             )}
@@ -524,7 +523,7 @@ const Home = () => {
                 <>
                     <div className="d-flex align-items-center justify-content-center flex-column mt-3">
                         <h5>File: {selectedFile?.name}</h5>
-                        <p style={{ fontSize: 16, textAlign: 'center' }}>Want to analyse another file? Click <a href={`${basePath}/`} onClick={() => window.location.reload()}>here</a> to return to the homepage!</p>
+                        <p style={{ fontSize: 16, textAlign: 'center' }}>Want to analyse another file? Click <a href='/' onClick={() => window.location.reload()}>here</a> to return to the homepage!</p>
                     </div>
                     <Suspense fallback={
                         <div className='d-flex align-items-center flex-column mt-5'>

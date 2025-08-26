@@ -16,8 +16,8 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@mui/icons-material": "^6.4.6",
-    "@mui/material": "^6.4.6",
+    "@mui/icons-material": "^6.4.8",
+    "@mui/material": "^6.4.8",
     "bootstrap": "^5.3.5",
     "chart.js": "^4.4.8",
     "chartjs-plugin-zoom": "^2.2.0",

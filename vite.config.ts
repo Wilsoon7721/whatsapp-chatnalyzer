@@ -1,8 +1,7 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react-swc';
 
-// https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [react()],
   server: {
     port: 3000,
@@ -10,6 +9,7 @@ export default defineConfig({
   build: {
     minify: 'terser',
     outDir: 'dist',
-    sourcemap: false
-  }
-});
+    sourcemap: false,
+  },
+  base: mode === 'production' ? '/apps/whatsapp-chatnalyzer/' : '/',
+}));

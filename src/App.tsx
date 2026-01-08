@@ -9,7 +9,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 function App() {
   return (
-    <Router >
+    <Router basename="/apps/whatsapp-chatnalyzer">
       <Header />
       <Routes>
         <Route path='/' element={<Home />} />

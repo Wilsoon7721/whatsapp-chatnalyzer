@@ -16,3 +16,13 @@
 input[type="file"] {
     display: none;
 }
+
+.alert-container {
+    width: 30%;
+}
+
+@media (max-width: 768px) {
+  .alert-container {
+    width: 100%;
+  }
+}

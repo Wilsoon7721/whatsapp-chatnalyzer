@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../styles/About.css';
 import { ThreeDotsVertical, ArrowRight } from 'react-bootstrap-icons';
 import FAQuestion from '../components/FAQuestion';
+import { Link } from 'react-router-dom';
 
 const About: React.FC = () => {
     const [privacyNoticeView, setPrivacyNoticeView] = useState(window.location.hash.includes('#privacy'));
@@ -31,7 +32,7 @@ const About: React.FC = () => {
             <div className='d-flex flex-column align-items-center' style={{ padding: '2rem 0' }}>
                 <h5 style={{ textAlign: 'center' }} className='mb-4' id='quickstart'>How do I start using your program?</h5>
                 <p>
-                    Export your WhatsApp chats by going to the chat you want to analyze and pressing the <ThreeDotsVertical size="18px" /> button on the top right. Afterwards, go to <b>More</b> <ArrowRight /> <b>Export chat</b> then <b>Without media</b>. Return to the <a href='/'>Home</a> page and provide the text file to the program.
+                    Export your WhatsApp chats by going to the chat you want to analyze and pressing the <ThreeDotsVertical size="18px" /> button on the top right. Afterwards, go to <b>More</b> <ArrowRight /> <b>Export chat</b> then <b>Without media</b>. Return to the <Link to='/'>Home</Link> page and provide the text file to the program.
                     <br /><br />
                     You may also choose to provide the ZIP file if you selected <b>With media</b>, but the program will only process the chat file and ignore everything else.
                 </p>

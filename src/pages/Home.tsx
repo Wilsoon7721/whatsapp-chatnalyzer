@@ -489,7 +489,7 @@ const Home = () => {
             {(!selectedFile && !errorMessage) && (
                 <>
                     <div style={{ height: '40px' }}></div>
-                    <div className='alert alert-primary mt-3' style={{ width: '40%', height: 'auto' }} >
+                    <div className='alert alert-primary alert-container mt-3' style={{ height: 'auto' }} >
                         <div className='d-flex flex-row align-items-center mb-2'>
                             <InfoCircleFill size='18px' style={{ marginRight: '10px' }} />
                             <strong>Not sure where to start?</strong>

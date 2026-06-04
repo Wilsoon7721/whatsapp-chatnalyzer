@@ -13,7 +13,7 @@ WhatsApp Chatnalyzer is a tool designed to help users extract various statistics
 
 ## Application Demo
 
-Check out the live version of the project [here](https://wilsoon7721.github.io/whatsapp-chatnalyzer/).
+Check out the live version of the project [here](https://wilsoon.dev/apps/whatsapp-chatnalyzer).
 
 ## Prefer to Host The Project Yourself?
 

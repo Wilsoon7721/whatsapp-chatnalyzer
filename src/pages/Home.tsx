@@ -494,7 +494,7 @@ const Home = () => {
                             <InfoCircleFill size='18px' style={{ marginRight: '10px' }} />
                             <strong>Not sure where to start?</strong>
                         </div>
-                        <p style={{ marginBottom: 0 }}>Take a look at the <a href='/about#quickstart'>quickstart</a>.</p>
+                        <p style={{ marginBottom: 0 }}>Take a look at the <a href='/apps/wahtsapp-chatnalyzer/about#quickstart'>quickstart</a>.</p>
                     </div>
                 </>
             )}
